@@ -6,9 +6,15 @@
 #define HW2_GROUPPLAYER_H
 
 class GroupPlayer{
-    int PlayerID;
-    int GroupID;
-    int Level;
+    int playerID;
+    int groupID;
+    int level;
+    int getPlayerID() const;
+    int getGroupID() const;
+    int getLevel() const;
+    void setPlayerID(int playerID) const;
+    void setGroupID(int groupID) const;
+    void setLevel(int level) const;
 };
 
 
