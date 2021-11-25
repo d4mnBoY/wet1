@@ -23,6 +23,7 @@ extern "C" {
 #include "GroupPlayer.h"
 
 #include "Player.h"
+
 /* Return Values
  * ----------------------------------- */
 typedef enum {
@@ -32,15 +33,18 @@ typedef enum {
     INVALID_INPUT = -3
 } StatusType;
 
-class DS{
-    AvlTree<Player>* PlayersTree;
-    AvlTree<AvlTree<GroupPlayer>>* GroupsTree;
+class DS {
+    AvlTree<Player> *PlayersTree;
+    AvlTree<AvlTree<GroupPlayer>> *GroupsTree;
 
 };
 
 void *Init();
 
-StatusType AddGroup(void *DS, int GroupID);
+StatusType AddGroup(void *DS, int GroupID)
+{
+
+}
 
 StatusType AddPlayer(void *DS, int PlayerID, int GroupID, int Level);
 
