@@ -52,6 +52,31 @@ StatusType PlayersManager::GetHighestLevel( int GroupID, int *PlayerID);//adam
 
 StatusType PlayersManager::GetAllPlayersByLevel(int GroupID, int **Players, int *numOfPlayers)
 {
+    if (this==NULL ||Players== nullptr||numOfPlayers== nullptr||GroupID==0)
+        return INVALID_INPUT;
+    if(GroupID>0)
+    {
+        groupsTree gt = groupsTree->get(GroupID);
+        if (!gt)
+        {
+            return FAILURE;
+        }
+        AvlTree<Player> playerByLevelTree=new AvlTree<Player>();
+        if(!playerByLevelTree)
+        {
+            return ALLOCATION_ERROR;
+        }
+        playerByLevelTree=addPlayerByLevelTree(playerByLevelTree,gt);
+    }
+    else
+    {
+
+    }
+    return SUCCESS;
+
+}
+AvlTree<Player> * addPlayerByLevelTree(AvlTree<Player> * tree,AvlTree<Player> group)
+{
 
 }
 

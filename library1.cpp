@@ -49,7 +49,7 @@ StatusType GetGroupsHighestLevel(void *DS, int numOfGroups, int **Players)
 
 }
 
-void Quit(void** DS)
+void Quit(void** DS)//adam
 {
-    return ((PlayersManager*)DS)-> Quit();//??
+    return ((PlayersManager*)DS)-> Quit();//??adam
 }

@@ -197,6 +197,13 @@ public:
         cout<<tree->data<<" ";
         inorder(tree->rightSon);
     }
+    void* inorderFunc(AvlTree* tree,func){// maybe needed
+        if(tree == nullptr)
+            return;
+        inorder(tree->leftSon);
+        func(data);
+        inorder(tree->rightSon);
+    }
     void postorder(AvlTree* tree){
         if(tree == nullptr)
             return;
