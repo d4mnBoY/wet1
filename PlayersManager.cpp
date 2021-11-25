@@ -70,12 +70,13 @@ StatusType PlayersManager::GetAllPlayersByLevel(int GroupID, int **Players, int 
     }
     else
     {
-
+        //go thru all and do:
+        playerByLevelTree=addPlayerByLevelTree(playerByLevelTree,gt);
     }
     return SUCCESS;
 
 }
-AvlTree<Player> * addPlayerByLevelTree(AvlTree<Player> * tree,AvlTree<Player> group)
+AvlTree<Player> * addPlayerByLevelTree(AvlTree<Player> * tree,AvlTree<Player>* group)
 {
 
 }
