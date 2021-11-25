@@ -15,8 +15,9 @@ public:
     T data;
 
     AvlTree(T data):data(data),leftSon(nullptr),rightSon(nullptr){}
+    AvlTree():data(T()),leftSon(nullptr),rightSon(nullptr){}
     ~AvlTree(){
-        ClearTree(this);
+        ClearTree(this); // we should define this
     }
     AvlTree<T>* insert(AvlTree *root, T data)
     {
