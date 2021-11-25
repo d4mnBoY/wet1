@@ -1,22 +1,19 @@
 //
-// Created by abusa on 11/24/2021.
+// Created by Admin on 11/25/2021.
 //
-#include "library1.h"
-#include "PlayersManager.h"
+
+#ifndef WET1111_PLAYERSMANAGER_H
+#define WET1111_PLAYERSMANAGER_H
+#include "AvlTree.h"
 #include "Player.h"
 #include "GroupPlayer.h"
+#include "library1.h"
 
-
-
-void* Init() {
-    PlayersManager *DS = new PlayersManager();
-    return (void*)DS;
-}
-StatusType AddGroup(void *DS, int GroupID){
-
-
-    return ((PlayersManager*)DS)-> AddGroup (GroupID);
-}
+class PlayersManager {
+    AvlTree<Player> *PlayersTree;
+    AvlTree<AvlTree<GroupPlayer>> *GroupsTree;
+    PlayersManager();
+    StatusType AddGroup( int GroupID);
 
 
 StatusType AddPlayer(void *DS, int PlayerID, int GroupID, int Level);//adam
@@ -37,3 +34,7 @@ StatusType GetAllPlayersByLevel(void *DS, int GroupID, int **Players, int *numOf
 StatusType GetGroupsHighestLevel(void *DS, int numOfGroups, int **Players);//adam
 
 void Quit(void** DS);
+
+
+#endif //WET1111_PLAYERSMANAGER_H
+};
