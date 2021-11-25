@@ -55,7 +55,6 @@ public:
     int checkFactor(AvlTree* root){
         return height(root->rightSon)-height(root->leftSon);
     }
-
     AvlTree<T>* findSuccessor(AvlTree* root){
         AvlTree* temp=root->rightSon;
         AvlTree* tempFather=root;
@@ -67,7 +66,6 @@ public:
             tempFather->leftSon=temp->rightSon;
         return temp;
     }
-
     AvlTree<T>* removeNode(AvlTree* root, T data)
     {
         if(root == nullptr)
@@ -157,7 +155,7 @@ public:
             return this->rightSon->get(data);
         return nullptr;
     }
-    AvlTree<T>* getFather(T data) // fix this
+    AvlTree<T>* getFather(T data)
     {
         if(this==nullptr)
             return nullptr;
@@ -184,8 +182,6 @@ public:
         }
         return h;
     }
-
-
     void preorder(AvlTree* tree){
         if(tree == nullptr)
             return;
@@ -208,7 +204,6 @@ public:
         postorder(tree->rightSon);
         cout<<tree->data<<" ";
     }
-
 };
 
 template <class T>

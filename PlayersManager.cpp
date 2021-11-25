@@ -3,10 +3,10 @@
 //
 
 #include "PlayersManager.h"
-PlayersManager::PlayersManager()
+PlayersManager* PlayersManager::PlayersManager()
 {
-    PlayersTree= new AvlTree<Player>();
-    GroupsTree=new AvlTree<GroupPlayer>();
+    playersTree= new AvlTree<Player>();
+    groupsTree=new AvlTree<GroupPlayer>();
 }
 
 {
@@ -14,26 +14,47 @@ PlayersManager::PlayersManager()
 }
 StatusType PlayersManager::AddGroup( int GroupID)
 {
-    if (this==NULL ||GroupID<=0) return INVALID_INPUT;
-
+    if (this==NULL ||GroupID<=0)
+        return INVALID_INPUT;
+    if(groupsTree.get(GroupID))
+        return FAILURE;
+    groupsTree=insert(groupsTree,GroupID);
+    return SUCCESS;
 }
 
 
-StatusType PlayersManager::AddPlayer(void *DS, int PlayerID, int GroupID, int Level);//adam
+StatusType PlayersManager::AddPlayer( int PlayerID, int GroupID, int Level);//adam
 
-StatusType PlayersManager::RemovePlayer(void *DS, int PlayerID)
+StatusType PlayersManager::RemovePlayer( int PlayerID)
+{
+    if (this==NULL ||PlayerID<=0)
+        return INVALID_INPUT;
+    if(!playersTree.get(PlayerID))
+        return FAILURE;
+    playersTree=removeNode(playersTree,GroupID);
+    return SUCCESS;
+}
+
+StatusType PlayersManager::ReplaceGroup( int GroupID, int ReplacementID);//adam
+
+StatusType PlayersManager::IncreaseLevel( int PlayerID, int LevelIncrease)
+{
+    if (this==NULL ||PlayerID<=0||LevelIncrease<=0)
+        return INVALID_INPUT;
+    Player player=playersTree.get(PlayerID);
+    if(!player)
+        return FAILURE;
+    player.levelIncrease(LevelIncrease);
+    return SUCCESS;
+}
+
+StatusType PlayersManager::GetHighestLevel( int GroupID, int *PlayerID);//adam
+
+StatusType PlayersManager::GetAllPlayersByLevel(int GroupID, int **Players, int *numOfPlayers)
 {
 
 }
 
-StatusType PlayersManager::ReplaceGroup(void *DS, int GroupID, int ReplacementID);//adam
-
-StatusType PlayersManager::IncreaseLevel(void *DS, int PlayerID, int LevelIncrease);
-
-StatusType PlayersManager::GetHighestLevel(void *DS, int GroupID, int *PlayerID);//adam
-
-StatusType PlayersManager::GetAllPlayersByLevel(void *DS, int GroupID, int **Players, int *numOfPlayers);
-
-StatusType PlayersManager::GetGroupsHighestLevel(void *DS, int numOfGroups, int **Players);//adam
+StatusType PlayersManager::GetGroupsHighestLevel( int numOfGroups, int **Players);//adam
 
 void PlayersManager::Quit(void** DS);

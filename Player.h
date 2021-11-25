@@ -19,7 +19,7 @@ class Player{
     void setPlayerID(int playerID) const;
     void setGroupID(int groupID) const;
     void setLevel(int level) const;
-
+    void levelIncrease(int levelIncrease) const
 };
 
 

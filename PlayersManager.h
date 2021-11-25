@@ -4,14 +4,15 @@
 
 #ifndef WET1111_PLAYERSMANAGER_H
 #define WET1111_PLAYERSMANAGER_H
+
 #include "AvlTree.h"
 #include "Player.h"
 #include "GroupPlayer.h"
 #include "library1.h"
 
 class PlayersManager {
-    AvlTree<Player> *PlayersTree;
-    AvlTree<AvlTree<GroupPlayer>> *GroupsTree;
+    AvlTree<Player> *playersTree;
+    AvlTree<AvlTree<GroupPlayer>> *groupsTree;
     PlayersManager();
     StatusType AddGroup( int GroupID);
 

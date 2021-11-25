@@ -27,3 +27,8 @@ void Player::setLevel(int level) const
 {
     this.level=level;
 }
+
+void Player::levelIncrease(int levelIncrease) const
+{
+    this.level+=levelIncrease;
+}
