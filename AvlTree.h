@@ -139,7 +139,7 @@ public:
         tempa->rightSon=tempb->leftSon;//
         tempb->leftSon=tempa;
         tempb->rightSon=root;
-        return tempb;
+        return tempb; //
     }
     AvlTree<T>* llRotation(AvlTree* root)
     {
