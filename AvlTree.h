@@ -5,6 +5,7 @@
 #ifndef HW2_AVLTREE_H
 #define HW2_AVLTREE_H
 #include "iostream"
+
 using namespace std;
 
 template <class T>
@@ -19,24 +20,25 @@ public:
     ~AvlTree(){
         ClearTree(this); // we should define this
     }
-    AvlTree<T>* insert(AvlTree *root, T data)
+    AvlTree* insert(AvlTree* root, T dataToAdd)
     {
-        if (root== nullptr)
-            return new AvlTree<T>(data);
-        if(data>root->data){
-            insert(root->rightSon ,data);
-            balanceTree(root);
+        if (root == nullptr)
+            return new AvlTree<T>(dataToAdd);
+        if(dataToAdd > root->data){
+            root->rightSon = insert(root->rightSon ,dataToAdd);
+            root = balanceTree(root);
         }
-        else if(data<root->data){
-                insert(root->leftSon, data);
-                balanceTree(root);
+        else if(dataToAdd < root->data){
+            root->leftSon = insert(root->leftSon, dataToAdd);
+            root = balanceTree(root);
         }
+        /*
         else {
 
-        }// need to check about equals //throw ?
-        return root
+        }*/// need to check about equals //throw ?
+        return root;
     }
-    void balanceTree(AvlTree* root)
+    AvlTree* balanceTree(AvlTree* root)
     {
         int factor= checkFactor(root);  // we get this from the tree
         if(factor > 1){
@@ -51,62 +53,65 @@ public:
                 root=rlRotation(root);
             else root= rrRotation(root);
         }
+        return root;
     }
     int checkFactor(AvlTree* root){
-        return height(root->rightSon)-height(root->leftSon);
+        int leftHeight = height(root->leftSon);
+        int rightHeight = height(root->rightSon);
+        int Factor = leftHeight-rightHeight;
+        return Factor;
     }
-    AvlTree<T>* findSuccessor(AvlTree* root){
-        AvlTree* temp=root->rightSon;
-        AvlTree* tempFather=root;
-        while(temp->leftSon){
-            tempFather=temp;
-            temp=temp->leftSon;
+    AvlTree<T>* findSuccessor(AvlTree* root,AvlTree** parent){
+        AvlTree* current=root->rightSon;
+        *parent= nullptr;
+        while(current->leftSon){
+            *parent = current;
+            current=current->leftSon;
         }
-        if(temp->rightSon)
-            tempFather->leftSon=temp->rightSon;
-        return temp;
+        return current;
     }
     AvlTree<T>* removeNode(AvlTree* root, T data)
     {
+
         if(root == nullptr)
             return root;//chekc if need throw
-        if (data== nullptr)
-            return root;//chekc if need throw
-        AvlTree<T>* toDelete = get(data);
-        if (toDelete== nullptr)
-            return root;//chekc if need throw
-        if(toDelete->leftSon == nullptr || toDelete->rightSon == nullptr ){
-            AvlTree* temp = toDelete->leftSon ? toDelete->leftSon : toDelete->rightSon;
-            if(temp == nullptr){
-                AvlTree* father = getFather(toDelete);
-                if(father->leftSon == toDelete){
-                    father->leftSon = nullptr;}
-                else{
-                    father->rightSon = nullptr;}
-                temp = toDelete;
-                toDelete = nullptr;
+        if(data < root->data)
+            root->leftSon = removeNode(root->leftSon,data);
+        else if(data > root->data)
+            root->rightSon = removeNode(root->rightSon,data);
+        else{ // this is the node to remove
+            AvlTree* temp1 = root;
+            if( root->leftSon == nullptr || root->rightSon == nullptr){
+                // mode with 1 child or 0 childes
+                AvlTree* temp= root->leftSon ? root->leftSon : root->rightSon;
+                if(temp == nullptr){
+                    //0 childes
+                    temp =root;
+                    root = nullptr;
+                } else{
+                    root=temp;
+                }
+                //free(rootTemp); //fix this
             } else{
-                AvlTree* father = getFather(toDelete);
-                if(father->leftSon == toDelete){
-                    father->leftSon == temp;}
-                else {
-                    father->rightSon == temp;}
-                toDelete=temp;
+                // node with 2 childes
+                AvlTree* parent = temp1;
+                AvlTree* temp = findSuccessor(root,&parent);
+                root=temp;
+                if(parent != nullptr){
+                    parent->leftSon=temp->rightSon;
+                    root->leftSon = temp1->leftSon;
+                    root->rightSon = temp1->rightSon;
+                    //free(rootTemp);
+                } else{
+                    temp->leftSon = temp1->leftSon;
+                    //free(rootTemp);
+                }
             }
-            delete (temp);
-        } else{
-            AvlTree* successor= findSuccessor(toDelete);
-            successor->leftSon=toDelete->leftSon;
-            successor->rightSon=toDelete->rightSon;
-            //father point to succesor
-            AvlTree* father = getFather(toDelete);
-            if(father->leftSon == toDelete){
-                father->leftSon=successor;
-            } else {
-                father->rightSon=successor};
-            delete(toDelete);
+
         }
-        balanceTree(root);
+        if(root == nullptr) //tree with 1 node
+            return root;
+        root = root->balanceTree(root);
         return root;
     }
     AvlTree<T>* rrRotation(AvlTree* root)
@@ -162,9 +167,9 @@ public:
         if(this->rightSon->data == data||this->leftSon->data == data)
             return this;
         else if(this->leftSon && this->leftSon->data > data)
-                return this->leftSon->getFather(data);
+            return this->leftSon->getFather(data);
         else if(this->rightSon && this->rightSon->data < data)
-                return this->rightSon->getFather(data);
+            return this->rightSon->getFather(data);
         return nullptr;
     }
     int height(AvlTree* tree)
@@ -173,12 +178,10 @@ public:
         if(tree != nullptr) {
             int leftTree = height(tree->leftSon);
             int rightTree = height(tree->rightSon);
-            if (leftTree > rightTree){
+            if (leftTree > rightTree)
                 h = leftTree + 1;
-            }
-            else {
+            else
                 h = rightTree + 1;
-            }
         }
         return h;
     }
@@ -197,13 +200,14 @@ public:
         cout<<tree->data<<" ";
         inorder(tree->rightSon);
     }
+    /**
     void* inorderFunc(AvlTree* tree,func){// maybe needed
         if(tree == nullptr)
             return;
         inorder(tree->leftSon);
         func(data);
         inorder(tree->rightSon);
-    }
+    }**/
     void postorder(AvlTree* tree){
         if(tree == nullptr)
             return;
@@ -211,6 +215,27 @@ public:
         postorder(tree->rightSon);
         cout<<tree->data<<" ";
     }
+
+
+    /*
+* Display AVL Tree for testing ...
+*/
+    void display(AvlTree *ptr, int level)
+    {
+        int i;
+        if (ptr!=NULL)
+        {
+            display(ptr->rightSon, level + 1);
+            printf("\n");
+            if (ptr )
+                cout<<"Root -> ";
+            for (i = 0; i < level && ptr ; i++)
+                cout<<"        ";
+            cout<<ptr->data;
+            display(ptr->leftSon, level + 1);
+        }
+    }
+    AvlTree& operator=(const AvlTree&) = default;
 };
 
 template <class T>
@@ -218,7 +243,7 @@ void ClearTree(AvlTree<T>* tree){
     if(tree != nullptr){
         ClearTree(tree->leftSon);
         ClearTree(tree->rightSon);
-        delete &(tree->data);
+        //delete &(tree->data); // fix this
     }
 }
 
