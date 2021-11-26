@@ -13,13 +13,7 @@ class Player{
     int level;
     AvlTree<GroupPlayer>* location;
 
-    int getPlayerID() const;
-    int getGroupID() const;
-    int getLevel() const;
-    void setPlayerID(int playerID) const;
-    void setGroupID(int groupID) const;
-    void setLevel(int level) const;
-    void levelIncrease(int levelIncrease) const
+
 };
 
 
